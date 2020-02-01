@@ -10,19 +10,19 @@ metadata:
 {{- if .Values.jxRequirements.ingress.annotations }}
 {{ toYaml .Values.jxRequirements.ingress.annotations | indent 4 }}
 {{- end }}
-  name: nexus
+  name: {{ .Values.service.name }}
 spec:
   rules:
-  - host: nexus{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
+  - host: {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
     http:
       paths:
       - backend:
-          serviceName: nexus
+          serviceName: {{ .Values.service.name }}
           servicePort: 80
 {{- if .Values.jxRequirements.ingress.tls.enabled }}
   tls:
   - hosts:
-    - nexus{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
+    - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
 {{- if .Values.jxRequirements.ingress.tls.production }}
     secretName: "tls-{{ .Values.jxRequirements.ingress.domain | replace "." "-" }}-p"
 {{- else }}
